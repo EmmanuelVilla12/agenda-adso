@@ -1,0 +1,60 @@
+:root {
+  font-family: 'Permanent Marker', cursive; /* estilo grafitti */
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #f5f5f5;
+  background-color: #000000; /* negro puro */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-align: center; /* centrar texto */
+}
+
+a {
+  font-weight: 500;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #888888;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;  /* centra horizontal */
+  align-items: center;      /* centra vertical */
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  letter-spacing: 2px; /* toque más urbano */
+}
+
+button {
+  border-radius: 6px;
+  border: 1px solid #ffffff;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: transparent; /* minimalista */
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
