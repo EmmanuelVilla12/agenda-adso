@@ -1,24 +1,33 @@
-.app-container {
-max-width: 600px;
-margin: 40px auto;
-padding: 20px;
-background: white;
-border-radius: 12px;
-box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-.card-contacto {
-background: #f9f9f9;
-border: 1px solid #e0e0e0;
-border-radius: 8px;
-padding: 15px;
-margin-bottom: 15px;
-}
-.card-etiqueta {
-display: inline-block;
-background: #39A900;
-color: white;
-padding: 4px 12px;
-border-radius: 12px;
-font-size: 0.85em;
+.app-container { max-width: 520px; margin: 2rem auto; font-family: Arial, sans-serif; }
+.app-title { color:#008037; text-align:center; margin-bottom:1rem; }
+.form-contacto { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+.form-contacto input { padding:8px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
+.form-contacto button { background:#008037; color:#fff; border:0; padding:10px; border-radius:6px; cursor:pointer; }
+.form-contacto button:hover { background:#006b2f; }
+
+.tarjeta-contacto { border:1px solid #ddd; border-radius:8px; padding:1rem; background:#fff; margin-bottom:.5rem; }
+.tarjeta-contacto h3 { color:#008037; margin:0 0 .3rem; }
+.btn-eliminar { margin-top:.15rem; background:#c62828; color:#fff; border:0; padding:.5rem .75rem; border-radius:6px; cursor:pointer; }
+.btn-eliminar:hover { background:#8e0000; }
+
+/* Espaciados dentro de la tarjeta */
+.tarjeta-contacto { display: flex; flex-direction: column; gap: 4px; }
+
+/* Estilo opcional para las líneas de datos */
+.tarjeta-contacto .dato { margin: 0; color: #333; }
+
+/* La etiqueta (rol) en su propia línea */
+.tarjeta-contacto .tag {
+  margin: 0;
+  color: #555;
+  font-size: 0.9rem;}
+
+  /* Contenedor del botón: lo empuja hacia la derecha y separa del contenido */
+.tarjeta-contacto .acciones {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
 }
 
+/* Si ya tenías margen en .btn-eliminar, puedes quitarlo */
+.btn-eliminar { margin-top: 0; }
