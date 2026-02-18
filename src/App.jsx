@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import ContactoCard from "./components/ContactoCard";
 import FormularioContacto from "./components/FormularioContacto";
 
 export default function App() {
-  const [contactos, setContactos] = useState([
-    {
-      id: 1,
-      nombre: "Carolina Pérez",
-      telefono: "300 123 4567",
-      correo: "carolina@sena.edu.co",
-      etiqueta: "Compañera",
-    },
-  ]);
+  const [contactos, setContactos] = useState(() => {
+    const guardados = localStorage.getItem("contactos");
+    return guardados
+      ? JSON.parse(guardados)
+      : [
+          {
+            id: 1,
+            nombre: "Carolina Pérez",
+            telefono: "300 123 4567",
+            correo: "carolina@sena.edu.co",
+            etiqueta: "Compañera",
+          },
+        ];
+  });
+
+  // 🔹 Guardar automáticamente cuando cambien los contactos
+  useEffect(() => {
+    localStorage.setItem("contactos", JSON.stringify(contactos));
+  }, [contactos]);
 
   // Agregar
   const agregarContacto = (nuevo) => {
