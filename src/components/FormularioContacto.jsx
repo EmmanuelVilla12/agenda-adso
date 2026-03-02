@@ -4,7 +4,7 @@ export default function FormularioContacto({ onAgregar }) {
   const [form, setForm] = useState({
     nombre: "",
     correo: "",
-    telefono: "",
+    descripcion: "",
 etiqueta: "",
   });
 
@@ -15,16 +15,22 @@ etiqueta: "",
 
   const onSubmit = (e) => {
     e.preventDefault(); // evita recargar
-    if (!form.nombre.trim() || !form.telefono.trim()) {
-      alert("Completa al menos Nombre y Teléfono");
+    if (!form.nombre.trim() || !form.descripcion.trim()) {
+      alert("Completa al menos Nombre y Descripcion");
       return;
     }
     onAgregar(form); // App agrega id y actualiza la lista
-    setForm({ nombre: "", correo: "", telefono: "", etiqueta: "" }); // limpiar
+    setForm({ imagen:"", nombre: "", correo: "", descripcion: "", etiqueta: "" }); // limpiar
   };
 
   return (
     <form onSubmit={onSubmit} className="form-contacto">
+      <input
+        name="imagen"
+        placeholder="imagen"
+        value={form.imagen}
+        onChange={onChange}
+      />
       <input
         name="nombre"
         placeholder="Nombre"
@@ -32,9 +38,9 @@ etiqueta: "",
         onChange={onChange}
       />
       <input
-        name="telefono"
-        placeholder="Teléfono"
-        value={form.telefono}
+        name="descripcion"
+        placeholder="descripcion"
+        value={form.descripcion}
         onChange={onChange}
       />
       <input

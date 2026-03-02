@@ -1,31 +1,7 @@
-.card-contacto {
-  background-color: #1e293b;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  text-align: left;
-  border: 1px solid #334155;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.card-nombre {
-  color: #38bdf8;
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-}
-
-.card-linea {
-  margin: 4px 0;
-  color: #cbd5e1;
-  word-break: break-word;
-}
-
-.card-etiqueta {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 4px 10px;
-  background-color: #0ea5e9;
-  color: #0f172a;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+body {
+@apply bg-gray-50 text-gray-800 font-sans;
 }

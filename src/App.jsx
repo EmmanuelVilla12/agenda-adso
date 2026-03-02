@@ -11,8 +11,9 @@ export default function App() {
       : [
           {
             id: 1,
+            imagen: "",
             nombre: "Carolina Pérez",
-            telefono: "300 123 4567",
+            descripcion: "amigble",
             correo: "carolina@sena.edu.co",
             etiqueta: "Compañera",
           },
@@ -35,8 +36,16 @@ export default function App() {
   };
 
   return (
-    <main className="app-container">
-      <h1 className="app-title">Agenda ADSO v2</h1>
+  <main className="max-w-2xl mx-auto mt-10 p-4">
+  <h1 className="text-3xl font-bold text-morado text-center mb-2">
+  Agenda ADSO v4
+  </h1> 
+  <p className="bg-morado text-white text-xs rounded px-2 py-1 w-fit">
+ADSO
+</p>
+    <p className="text-gray-500 text-center mb-6">
+  Interfaz moderna con TailwindCSS
+  </p>
 
       <FormularioContacto onAgregar={agregarContacto} />
 
@@ -45,8 +54,9 @@ export default function App() {
           <ContactoCard
             key={c.id}
             id={c.id}
+            imagen={c.imagen} 
             nombre={c.nombre}
-            telefono={c.telefono}
+            descripcion={c.descripcion}
             correo={c.correo}
             etiqueta={c.etiqueta}
             onDelete={eliminarContacto}
