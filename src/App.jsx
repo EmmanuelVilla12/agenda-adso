@@ -1,9 +1,18 @@
+// Archivo: src/App.jsx
+// Componente principal de Agenda ADSO.
+// Maneja estados globales, carga de contactos y conexión con la API.
+
 import { useEffect, useState } from "react";
+
 import {
   listarContactos,
   crearContacto,
   eliminarContactoPorId,
 } from "./api.js";
+
+// NUEVO: configuración global
+import { APP_INFO } from "./config";
+
 import FormularioContacto from "./components/FormularioContacto";
 import ContactoCard from "./components/ContactoCard";
 
@@ -17,10 +26,13 @@ export default function App() {
   useEffect(() => {
     async function cargarContactos() {
       try {
+        setCargando(true);
+        setError("");
+
         const data = await listarContactos();
         setContactos(data);
       } catch (error) {
-        console.error(error);
+        console.error("Error al cargar contactos:", error);
         setError(
           "No se pudieron cargar los contactos. Verifica que el servidor esté activo o tu conexión a internet."
         );
@@ -33,25 +45,33 @@ export default function App() {
   }, []);
 
   // Agregar contacto (POST)
-  const agregarContacto = async (nuevo) => {
+  const onAgregarContacto = async (nuevo) => {
     try {
+      setError("");
+
       const creado = await crearContacto(nuevo);
       setContactos((prev) => [...prev, creado]);
     } catch (error) {
-      console.error(error);
+      console.error("Error al crear contacto:", error);
+
       setError(
         "No se pudo guardar el contacto. Verifica tu conexión o intenta nuevamente en unos momentos."
       );
+
+      throw error;
     }
   };
 
   // Eliminar contacto (DELETE)
-  const eliminarContacto = async (id) => {
+  const onEliminarContacto = async (id) => {
     try {
+      setError("");
+
       await eliminarContactoPorId(id);
       setContactos((prev) => prev.filter((c) => c.id !== id));
     } catch (error) {
-      console.error(error);
+      console.error("Error al eliminar contacto:", error);
+
       setError(
         "No se pudo eliminar el contacto. Intenta nuevamente o revisa la conexión con el servidor."
       );
@@ -63,13 +83,15 @@ export default function App() {
       {/* Encabezado */}
       <header className="max-w-6xl mx-auto px-6 pt-8">
         <p className="text-sm font-semibold text-gray-400 tracking-[0.25em] uppercase">
-          Programa ADSO
+          Desarrollo Web ReactJS Ficha {APP_INFO.ficha}
         </p>
+
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 mt-2">
-          Agenda ADSO v5
+          {APP_INFO.titulo}
         </h1>
+
         <p className="text-gray-500 mt-1">
-          Gestión de contactos conectada a una API local con JSON Server.
+          {APP_INFO.subtitulo}
         </p>
       </header>
 
@@ -90,9 +112,9 @@ export default function App() {
         )}
 
         {/* Formulario */}
-        <FormularioContacto onAgregar={agregarContacto} />
+        <FormularioContacto onAgregar={onAgregarContacto} />
 
-        {/* Lista */}
+        {/* Lista de contactos */}
         <div className="space-y-4">
           {contactos.length === 0 && !cargando && (
             <p className="text-gray-500 text-sm">
@@ -104,7 +126,7 @@ export default function App() {
             <ContactoCard
               key={c.id}
               {...c}
-              onEliminar={() => eliminarContacto(c.id)}
+              onEliminar={() => onEliminarContacto(c.id)}
             />
           ))}
         </div>
