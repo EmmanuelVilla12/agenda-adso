@@ -13,15 +13,17 @@ export default function App() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Cargar la lista desde la API al montar el componente  (GET)
+  // Cargar la lista desde la API al montar el componente (GET)
   useEffect(() => {
     async function cargarContactos() {
       try {
-        const data = await listarContactos();   // GET a la API
-        setContactos(data);                     // Guardamos en estado
+        const data = await listarContactos();
+        setContactos(data);
       } catch (error) {
         console.error(error);
-        setError("No se pudo cargar la lista de contactos");
+        setError(
+          "No se pudieron cargar los contactos. Verifica que el servidor esté activo o tu conexión a internet."
+        );
       } finally {
         setCargando(false);
       }
@@ -30,25 +32,29 @@ export default function App() {
     cargarContactos();
   }, []);
 
-  // Agregar contacto usando la API (POST)
+  // Agregar contacto (POST)
   const agregarContacto = async (nuevo) => {
     try {
-      const creado = await crearContacto(nuevo);      // POST a la API
-      setContactos((prev) => [...prev, creado]);      // Actualizamos estado
+      const creado = await crearContacto(nuevo);
+      setContactos((prev) => [...prev, creado]);
     } catch (error) {
       console.error(error);
-      setError("No se pudo agregar el contacto");
+      setError(
+        "No se pudo guardar el contacto. Verifica tu conexión o intenta nuevamente en unos momentos."
+      );
     }
   };
 
-  // Eliminar contacto usando la API (DELETE)
+  // Eliminar contacto (DELETE)
   const eliminarContacto = async (id) => {
     try {
-      await eliminarContactoPorId(id);                       // DELETE en la API
-      setContactos((prev) => prev.filter((c) => c.id !== id)); // Quitamos del estado
+      await eliminarContactoPorId(id);
+      setContactos((prev) => prev.filter((c) => c.id !== id));
     } catch (error) {
       console.error(error);
-      setError("No se pudo eliminar el contacto");
+      setError(
+        "No se pudo eliminar el contacto. Intenta nuevamente o revisa la conexión con el servidor."
+      );
     }
   };
 
@@ -66,24 +72,27 @@ export default function App() {
           Gestión de contactos conectada a una API local con JSON Server.
         </p>
       </header>
- <section className="max-w-6xl mx-auto px-6 py-8 space-y-6">
-        {/* Mensajes de estado */}
+
+      <section className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+
+        {/* Error de API */}
         {error && (
           <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
             {error}
           </div>
         )}
 
+        {/* Estado de carga */}
         {cargando && (
           <div className="rounded-xl bg-purple-50 border border-purple-200 px-4 py-3 text-sm text-purple-700">
             Cargando contactos desde la API...
           </div>
         )}
 
-        {/* Formulario para agregar contactos */}
+        {/* Formulario */}
         <FormularioContacto onAgregar={agregarContacto} />
 
-        {/* Lista de contactos */}
+        {/* Lista */}
         <div className="space-y-4">
           {contactos.length === 0 && !cargando && (
             <p className="text-gray-500 text-sm">
@@ -99,6 +108,7 @@ export default function App() {
             />
           ))}
         </div>
+
       </section>
     </main>
   );
