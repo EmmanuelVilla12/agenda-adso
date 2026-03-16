@@ -1,6 +1,3 @@
-// Este componente muestra un contacto individual.
-// Incluye nombre, teléfono, correo, etiqueta y el botón de eliminar.
-
 export default function ContactoCard({
   nombre,
   telefono,
@@ -10,47 +7,41 @@ export default function ContactoCard({
   onEliminar,
 }) {
   return (
-    <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 flex items-start justify-between">
-      {/* Información del contacto */}
+    <div className="bg-white border border-black/10 rounded-xl p-6 flex items-start justify-between hover:shadow-md transition">
+
       <div className="space-y-1">
-        {/* Nombre */}
-        <h3 className="text-xl font-semibold text-gray-800">{nombre}</h3>
+        <h3 className="text-xl font-semibold text-black">{nombre}</h3>
 
-        {/* Teléfono */}
         <p className="text-gray-600 text-sm flex items-center gap-2">
-          <span className="text-purple-500 text-lg">📞</span>
-          {telefono}
+          📞 {telefono}
         </p>
 
-        {/* Correo */}
         <p className="text-gray-600 text-sm flex items-center gap-2">
-          <span className="text-purple-500 text-lg">✉️</span>
-          {correo}
+          ✉️ {correo}
         </p>
 
-        {/* Etiqueta (si existe) */}
         {etiqueta && (
-          <span className="inline-block bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full mt-2">
+          <span className="inline-block border border-black text-xs px-3 py-1 rounded-full mt-2">
             {etiqueta}
           </span>
         )}
       </div>
 
-      {/* Botón de editar */}
-      <button
-        onClick={onEditar}
-        className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded-lg shadow transition"
-      >
-        Editar
-      </button>
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={onEditar}
+          className="border border-black px-4 py-2 rounded-lg text-sm hover:bg-black hover:text-white transition"
+        >
+          Editar
+        </button>
 
-      {/* Botón de eliminar */}
-      <button
-        onClick={onEliminar}
-        className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg shadow transition"
-      >
-        Eliminar
-      </button>
+        <button
+          onClick={onEliminar}
+          className="border border-black px-4 py-2 rounded-lg text-sm hover:bg-black hover:text-white transition"
+        >
+          Eliminar
+        </button>
+      </div>
     </div>
   );
 }

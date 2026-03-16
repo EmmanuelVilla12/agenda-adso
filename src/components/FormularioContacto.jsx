@@ -24,29 +24,28 @@ export default function FormularioContacto({
   // NUEVO: estado de envío
   const [enviando, setEnviando] = useState(false);
 
- useEffect(() => {
-  if (contactoEnEdicion) {
-    setForm({
-      nombre: contactoEnEdicion.nombre || "",
-      telefono: contactoEnEdicion.telefono || "",
-      correo: contactoEnEdicion.correo || "",
-      etiqueta: contactoEnEdicion.etiqueta || "",
-    });
+  useEffect(() => {
+    if (contactoEnEdicion) {
+      setForm({
+        nombre: contactoEnEdicion.nombre || "",
+        telefono: contactoEnEdicion.telefono || "",
+        correo: contactoEnEdicion.correo || "",
+        etiqueta: contactoEnEdicion.etiqueta || "",
+      });
 
-    setErrores({ nombre: "", telefono: "", correo: "" });
+      setErrores({ nombre: "", telefono: "", correo: "" });
+    } else {
+      // NUEVO: limpiar formulario cuando se cancela edición
+      setForm({
+        nombre: "",
+        telefono: "",
+        correo: "",
+        etiqueta: "",
+      });
 
-  } else {
-    // NUEVO: limpiar formulario cuando se cancela edición
-    setForm({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      etiqueta: "",
-    });
-
-    setErrores({ nombre: "", telefono: "", correo: "" });
-  }
-}, [contactoEnEdicion]);
+      setErrores({ nombre: "", telefono: "", correo: "" });
+    }
+  }, [contactoEnEdicion]);
 
   // onChange genérico: actualiza el campo según "name"
   const onChange = (e) => {
@@ -75,9 +74,7 @@ export default function FormularioContacto({
     setErrores(nuevosErrores);
 
     return (
-      !nuevosErrores.nombre &&
-      !nuevosErrores.telefono &&
-      !nuevosErrores.correo
+      !nuevosErrores.nombre && !nuevosErrores.telefono && !nuevosErrores.correo
     );
   }
 
@@ -107,7 +104,6 @@ export default function FormularioContacto({
       // limpiar formulario
       setForm({ nombre: "", telefono: "", correo: "", etiqueta: "" });
       setErrores({ nombre: "", telefono: "", correo: "" });
-
     } finally {
       setEnviando(false);
     }
@@ -118,9 +114,7 @@ export default function FormularioContacto({
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
         {/* Nombre */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -136,9 +130,7 @@ export default function FormularioContacto({
           />
 
           {errores.nombre && (
-            <p className="text-red-500 text-sm mt-1">
-              {errores.nombre}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errores.nombre}</p>
           )}
         </div>
 
@@ -157,9 +149,7 @@ export default function FormularioContacto({
           />
 
           {errores.telefono && (
-            <p className="text-red-500 text-sm mt-1">
-              {errores.telefono}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errores.telefono}</p>
           )}
         </div>
       </div>
@@ -179,9 +169,7 @@ export default function FormularioContacto({
         />
 
         {errores.correo && (
-          <p className="text-red-500 text-sm mt-1">
-            {errores.correo}
-          </p>
+          <p className="text-red-500 text-sm mt-1">{errores.correo}</p>
         )}
       </div>
 
@@ -202,32 +190,41 @@ export default function FormularioContacto({
 
       {/* Botones */}
       <div className="flex gap-3">
-
         {/* Botón principal */}
         <button
           disabled={enviando}
-          className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold shadow-sm disabled:bg-purple-300 disabled:cursor-not-allowed"
+          className="bg-black text-white px-6 py-3 rounded-lg hover:opacity-80 transition"
         >
           {enviando
             ? "Guardando..."
             : estaEnEdicion
-            ? "Guardar cambios"
-            : "Agregar contacto"}
+              ? "Guardar cambios"
+              : "Agregar contacto"}
         </button>
 
-        {/* NUEVO: botón cancelar edición */}
         {estaEnEdicion && (
           <button
             type="button"
-            onClick={onCancelarEdicion}
-            className="bg-gray-100 text-gray-700 px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-200"
+            onClick={() => {
+              // limpiar formulario
+              setForm({
+                nombre: "",
+                telefono: "",
+                correo: "",
+                etiqueta: "",
+              });
+
+              setErrores({ nombre: "", telefono: "", correo: "" });
+
+              // salir de modo edición
+              if (onCancelarEdicion) onCancelarEdicion();
+            }}
+            className="w-full border border-black/20 rounded-lg px-3 py-2 focus:outline-none focus:border-black"
           >
             Cancelar edición
           </button>
         )}
-
       </div>
-
     </form>
   );
 }
