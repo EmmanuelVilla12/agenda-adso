@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // MODIFICADO (se agrega useEffect)
 
-export default function FormularioContacto({ onAgregar }) {
+export default function FormularioContacto({
+  onAgregar,
+  onActualizar, // NUEVO
+  contactoEnEdicion, // NUEVO
+  onCancelarEdicion, // NUEVO
+}) {
   // Estado del formulario como objeto único controlado
   const [form, setForm] = useState({
     nombre: "",
@@ -18,6 +23,30 @@ export default function FormularioContacto({ onAgregar }) {
 
   // NUEVO: estado de envío
   const [enviando, setEnviando] = useState(false);
+
+ useEffect(() => {
+  if (contactoEnEdicion) {
+    setForm({
+      nombre: contactoEnEdicion.nombre || "",
+      telefono: contactoEnEdicion.telefono || "",
+      correo: contactoEnEdicion.correo || "",
+      etiqueta: contactoEnEdicion.etiqueta || "",
+    });
+
+    setErrores({ nombre: "", telefono: "", correo: "" });
+
+  } else {
+    // NUEVO: limpiar formulario cuando se cancela edición
+    setForm({
+      nombre: "",
+      telefono: "",
+      correo: "",
+      etiqueta: "",
+    });
+
+    setErrores({ nombre: "", telefono: "", correo: "" });
+  }
+}, [contactoEnEdicion]);
 
   // onChange genérico: actualiza el campo según "name"
   const onChange = (e) => {
@@ -63,15 +92,29 @@ export default function FormularioContacto({ onAgregar }) {
     try {
       setEnviando(true);
 
-      await onAgregar(form);
+      // ===== MODIFICADO: si hay contacto en edición =====
+      if (contactoEnEdicion) {
+        await onActualizar({
+          ...form,
+          id: contactoEnEdicion.id,
+        });
 
+        if (onCancelarEdicion) onCancelarEdicion();
+      } else {
+        await onAgregar(form);
+      }
+
+      // limpiar formulario
       setForm({ nombre: "", telefono: "", correo: "", etiqueta: "" });
-
       setErrores({ nombre: "", telefono: "", correo: "" });
+
     } finally {
       setEnviando(false);
     }
   };
+
+  // NUEVO: detectar si estamos editando
+  const estaEnEdicion = Boolean(contactoEnEdicion);
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -157,13 +200,33 @@ export default function FormularioContacto({ onAgregar }) {
         />
       </div>
 
-      {/* Botón con estado */}
-      <button
-        disabled={enviando}
-        className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold shadow-sm disabled:bg-purple-300 disabled:cursor-not-allowed"
-      >
-        {enviando ? "Guardando..." : "Agregar contacto"}
-      </button>
+      {/* Botones */}
+      <div className="flex gap-3">
+
+        {/* Botón principal */}
+        <button
+          disabled={enviando}
+          className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold shadow-sm disabled:bg-purple-300 disabled:cursor-not-allowed"
+        >
+          {enviando
+            ? "Guardando..."
+            : estaEnEdicion
+            ? "Guardar cambios"
+            : "Agregar contacto"}
+        </button>
+
+        {/* NUEVO: botón cancelar edición */}
+        {estaEnEdicion && (
+          <button
+            type="button"
+            onClick={onCancelarEdicion}
+            className="bg-gray-100 text-gray-700 px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-200"
+          >
+            Cancelar edición
+          </button>
+        )}
+
+      </div>
 
     </form>
   );
